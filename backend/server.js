@@ -10,7 +10,9 @@ import productsHandler from "./product.js";
 
 const allowedOrigins = [
   "http://localhost:5173",                        // local dev
-  "https://sareeweb-mjnj.onrender.com/"      // replace with your Render frontend URL
+  "https://sareeweb-mjnj.onrender.com/"   ,
+  "https://sareecanvas.com",              
+  "https://www.sareecanvas.com"   
 ];
 
 
