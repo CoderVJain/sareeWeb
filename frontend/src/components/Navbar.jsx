@@ -73,7 +73,7 @@ const Navbar = () => {
 
   // Function to handle WhatsApp Redirect
   const handleShopNow = () => {
-    const phoneNumber = "919876543210"; // Replace with your number
+    const phoneNumber = "+917506577362"; // Replace with your number
     const message = "Hello! I would like to browse your Saree collection.";
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, "_blank");
   };

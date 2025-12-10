@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const Hero = () => {
   const handleShopNow = () => {
-    const phoneNumber = "919876543210"; 
+    const phoneNumber = "917506577362"; 
     const message = "Hello! I'm interested in seeing your latest saree collection.";
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, "_blank");
   };

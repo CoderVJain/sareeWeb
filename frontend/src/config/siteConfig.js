@@ -6,11 +6,11 @@ const siteConfig = {
     tagline: "Specialty chemistry for modern industries",
   },
   contact: {
-    phone: "+91 8097968735",
-    phoneHref: "+18005550100",
+    phone: "+91 75065 77362",
+    phoneHref: "+91 75065 77362",
     email: "hello@cindrallabs.com",
     salesEmail: "sales@cindrallabs.com",
-    whatsapp: "+18005550100",
+    whatsapp: "+91 75065 77362",
   },
   socialLinks: [
     { label: "Website", href: "#", icon: "public" },
