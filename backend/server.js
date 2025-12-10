@@ -5,10 +5,30 @@ import dotenv from "dotenv";
 import productsHandler from "./product.js";
 
 
+import cors from "cors";
+
+const allowedOrigins = [
+  "http://localhost:5173",                        // local dev
+  "https://sareeweb-mjnj.onrender.com/"      // replace with your Render frontend URL
+];
+
+
+
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS blocked by server"));
+    }
+  },
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+}));
 app.use(express.json());
 
 app.get("/api/products", productsHandler);
