@@ -83,7 +83,7 @@ const ProductCatalogue = () => {
           </div>
         ) : (
           <div className="text-center py-20 text-gray-500 text-lg">
-            No products found matching "{query}"
+            No products found matching
           </div>
         )}
 
