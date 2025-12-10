@@ -1,6 +1,6 @@
 import React from "react";
 import ProductCard from "./ProductCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useProducts from "../../hooks/useProducts";
 
 const Products = () => {
@@ -52,7 +52,7 @@ const Products = () => {
 
         {/* BUTTON */}
         <button className="mt-16 px-10 py-3 bg-[#7A2F2F] text-white text-lg rounded-full hover:bg-[#5e2222] transition">
-          View More Products
+          <Link to="/products" >View More Products</Link>
         </button>
       </div>
     </section>
