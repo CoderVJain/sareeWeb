@@ -33,7 +33,7 @@
 
 const ProductCard = ({ img, name, price, pcs }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[260px] flex flex-col">
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden w-full max-w-[260px] flex flex-col mx-auto">
 
       {/* FIXED IMAGE HEIGHT */}
       <div className="h-[200px] sm:h-[240px] md:h-[260px] lg:h-[300px] w-full overflow-hidden">

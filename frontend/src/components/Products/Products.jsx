@@ -16,22 +16,18 @@ const Products = () => {
     <section className="bg-[#F7F5F2] py-16 font-playfair">
       <div className="max-w-7xl mx-auto px-6 text-center flex flex-col items-center">
         {/* OM ICON */}
-        <div className="text-3xl md:text-4xl  text-black leading-none">
-          ॐ
-        </div>
+        <div className="text-3xl md:text-4xl  text-black leading-none">ॐ</div>
 
         {/* TITLE */}
 
         <p className="text-3xl md:text-3xl font-bold text-black leading-tight">
           Enhance Your Look
         </p>
-        
 
         {/* DESCRIPTION */}
         <p className="text-center text-gray-700 text-base md:text-lg  max-w-2xl mx-auto mb-4">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero illo
-          consequatur iste eius tenetur quis assumenda molestiae! Omnis sint
-          quam
+          Step into the spotlight. From festive silks to daily comfort, find the
+          perfect saree that speaks to your unique soul
         </p>
 
         {/* PRODUCTS GRID */}
@@ -39,20 +35,19 @@ const Products = () => {
           {products.slice(0, 4).map((item) => (
             <div key={item.id} onClick={() => handleClick()}>
               <ProductCard
-              key={item.id}
-              img={item.image}
-              name={item.name}
-              price={item.price}
-              pcs={item.pcs}
-            />
+                key={item.id}
+                img={item.image}
+                name={item.name}
+                price={item.price}
+                pcs={item.pcs}
+              />
             </div>
-            
           ))}
         </div>
 
         {/* BUTTON */}
         <button className="mt-16 px-10 py-3 bg-[#7A2F2F] text-white text-lg rounded-full hover:bg-[#5e2222] transition">
-          <Link to="/products" >View More Products</Link>
+          <Link to="/products">View More Products</Link>
         </button>
       </div>
     </section>
