@@ -27,7 +27,7 @@ const Products = () => {
         {/* DESCRIPTION */}
         <p className="text-center text-gray-700 text-base md:text-lg  max-w-2xl mx-auto mb-4">
           Step into the spotlight. From festive silks to daily comfort, find the
-          perfect saree that speaks to your unique soul
+          perfect saree that speaks to your unique soul.
         </p>
 
         {/* PRODUCTS GRID */}
