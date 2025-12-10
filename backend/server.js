@@ -5,7 +5,8 @@ import dotenv from "dotenv";
 import productsHandler from "./product.js";
 
 
-import cors from "cors";
+
+
 
 const allowedOrigins = [
   "http://localhost:5173",                        // local dev
