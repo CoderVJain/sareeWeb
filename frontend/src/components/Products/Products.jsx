@@ -39,7 +39,9 @@ const Products = () => {
                 img={item.image}
                 name={item.name}
                 price={item.price}
-                pcs={item.pcs}
+                pcs={item.peices}
+                discount={item.discount}
+                discountedPrice={item.discountedPrice}
               />
             </div>
           ))}

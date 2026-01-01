@@ -141,7 +141,7 @@ const ProductInfo = () => {
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center bg-[#F7F5F2]">
         <h2 className="text-2xl font-serif text-[#7A2F2F] mb-4">Product Not Found</h2>
-        <button 
+        <button
           onClick={() => navigate(-1)}
           className="text-black underline hover:text-[#7A2F2F]"
         >
@@ -154,10 +154,13 @@ const ProductInfo = () => {
   // Helper to ensure we have a Total Price number
   // If product.fullPrice exists, use it. Otherwise, calculate price * pieces.
   const calculateTotal = () => {
-    if (product.fullPrice) return product.fullPrice;
-    // Strip "₹" and commas if present to calculate
-    const priceNum = parseInt(String(product.price).replace(/[^0-9]/g, '')) || 0;
-    const piecesNum = parseInt(product.pcs) || 1;
+    // If specific fullPrice exists, use it (assumes it overrides calculation)
+    // NOTE: If you want full bundle price to always reflect (discountedPrice * pieces), remove the product.fullPrice check or update backend accordingly.
+    // For now, let's prioritize the calculated discounted total if discount exists.
+
+    const priceToUse = product.discountedPrice || product.price;
+    const priceNum = parseInt(String(priceToUse).replace(/[^0-9]/g, '')) || 0;
+    const piecesNum = parseInt(product.peices) || 1; // Updated to use 'peices' to match backend
     return priceNum * piecesNum;
   };
 
@@ -172,17 +175,17 @@ const ProductInfo = () => {
   return (
     <div className="bg-[#F9F5F0] min-h-screen py-8 md:py-16 font-sans">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Back Button */}
-        <button 
-          onClick={() => navigate(-1)} 
+        <button
+          onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-[#6F6F6F] hover:text-[#7A2F2F] transition-colors mb-6 md:mb-8"
         >
           <FaArrowLeft /> Back to Products
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-start">
-          
+
           {/* --- LEFT: IMAGE SECTION --- */}
           <div className="w-full md:sticky md:top-24">
             <div className="rounded-3xl overflow-hidden bg-white shadow-lg border border-[#E8DCC6] relative group">
@@ -196,7 +199,7 @@ const ProductInfo = () => {
 
           {/* --- RIGHT: DETAILS SECTION --- */}
           <div className="flex flex-col space-y-6 md:space-y-8">
-            
+
             {/* Header */}
             <div>
               <p className="text-sm font-bold tracking-widest text-[#7A2F2F] uppercase mb-2">
@@ -210,22 +213,37 @@ const ProductInfo = () => {
             {/* --- UPDATED PRICE BLOCK --- */}
             <div className="bg-white p-6 rounded-2xl border border-[#E8DCC6] shadow-sm">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                
+
                 {/* Per Piece Price */}
                 <div>
-                  <p className="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-1">
-                    Price Per Piece
-                  </p>
-                  <span className="text-3xl font-bold text-[#7A2F2F]">
-                    ₹{product.price}
-                  </span>
+                  <div className="flex items-baseline gap-3">
+                    {product.discountedPrice ? (
+                      <>
+                        <span className="text-4xl font-serif font-bold text-[#2B0F0F]">
+                          ₹{product.discountedPrice}
+                        </span>
+                        <span className="text-xl text-gray-400 line-through decoration-red-900/30">
+                          ₹{product.price}
+                        </span>
+                        {product.discount && (
+                          <span className="bg-[#7A2F2F] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm">
+                            {product.discount.toString().includes("%") ? product.discount : `${product.discount}% OFF`}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-4xl font-serif font-bold text-[#2B0F0F]">
+                        ₹{product.price}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Vertical Divider (Hidden on mobile) */}
-                <div className="hidden sm:block w-px h-12 bg-[#E8DCC6]"></div>
+                <div className="hidden sm:block w-px h-16 bg-[#E8DCC6]"></div>
 
                 {/* Total Bundle Price */}
-                <div>
+                <div className="flex flex-col justify-center">
                   <p className="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-1">
                     Total Set Price ({product.peices || 1} Pcs)
                   </p>
@@ -239,7 +257,7 @@ const ProductInfo = () => {
 
             {/* Product Details Grid */}
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 text-sm md:text-base border-t border-b border-[#E8DCC6] py-6">
-              
+
               <div className="space-y-1">
                 <p className="text-[#8C7B75] font-medium">Pieces in Set</p>
                 <p className="text-[#2B0F0F] font-semibold">{product.peices || "N/A"}</p>
@@ -260,7 +278,7 @@ const ProductInfo = () => {
                 <p className="text-[#2B0F0F] font-semibold">{product.initialDelivery || "Ready to Ship"}</p>
               </div>
 
-               <div className="col-span-2 space-y-1">
+              <div className="col-span-2 space-y-1">
                 <p className="text-[#8C7B75] font-medium">Catalog Name</p>
                 <p className="text-[#2B0F0F] font-semibold">{product.catalog}</p>
               </div>
@@ -282,21 +300,22 @@ const ProductInfo = () => {
               className="
                 w-full 
                 flex items-center justify-center gap-3
-                bg-[#25D366] hover:bg-[#20bd5a]
+                bg-[#2B0F0F] hover:bg-[#4A1A1A]
                 text-white 
                 py-4 
                 px-8
                 rounded-full 
                 text-lg 
                 font-bold 
-                shadow-lg hover:shadow-xl hover:-translate-y-1
-                transition-all duration-300
+                shadow-xl hover:shadow-2xl hover:-translate-y-1
+                active:scale-95
+                transition-all duration-300 border border-[#4A1A1A]
               "
             >
-              <FaWhatsapp className="text-2xl" />
-              Buy Full Set on WhatsApp
+              <FaWhatsapp className="text-3xl" />
+              <span>Buy Full Set on WhatsApp</span>
             </button>
-            
+
           </div>
         </div>
       </div>

@@ -20,15 +20,19 @@ const productsHandler = async (req, res) => {
       name: row[0] || "",
       price: row[1] || "",
       peices: row[2] || "",
-      catalog: row[3] || "",
-      perPeicePrice: row[4] || "",
-      fullPrice: row[5] || "",
-      size: row[6] || "",
-      fabric: row[7] || "",
-      initialDelivery: row[8] || "",
-      availability: row[9] || "",
-      description: row[10] || "",
-      image: row[11] || "",
+      category: row[3] || "",
+      subcategory: row[4] || "",
+      perPeicePrice: row[5] || "",
+      fullPrice: row[6] || "",
+      size: row[7] || "",
+      fabric: row[8] || "",
+      initialDelivery: row[9] || "",
+      availability: row[10] || "",
+      description: row[11] || "",
+      image: row[12] || "",
+
+      discount: row[13] || "",
+      discountedPrice: row[14] || "",
     }));
 
     res.status(200).json(products);

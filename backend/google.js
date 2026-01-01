@@ -9,7 +9,7 @@ dotenv.config();
 
 function normalizePrivateKey(key) {
   if (!key) return "";
-  
+
   // Case 1: Vercel / production ----> contains "\n" as TEXT
   if (key.includes("\\n")) {
     return key.replace(/\\n/g, "\n");
@@ -88,6 +88,21 @@ export async function getPublicImageURL(fileId, thumb = true) {
       console.log("Permission already public or error:", err.message);
       publicCache.add(fileId);
     }
+  }
+
+  // Check MimeType to detect PDF
+  try {
+    const fileMeta = await drive.files.get({
+      fileId,
+      fields: "mimeType",
+    });
+
+    if (fileMeta.data.mimeType === "application/pdf") {
+      return `pdf:${fileId}`;
+    }
+  } catch (error) {
+    console.error(`Error fetching metadata for ${fileId}:`, error.message);
+    // Fallback: assume image if check fails
   }
 
   // Thumbnail mode (recommended for frontend)
