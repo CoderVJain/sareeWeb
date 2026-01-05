@@ -16,7 +16,18 @@ const PRODUCT_CACHE_KEY = "products";
    FIXED API BASE
 ----------------------------- */
 const resolveApiBase = () => {
-  return "https://sareeweb-ip9t.onrender.com"
+  // 1. If VITE_API_URL is set (e.g. in Render env), use it.
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL.replace(/\/$/, "");
+  }
+
+  // 2. If in Development mode (and no env var set), use localhost.
+  if (import.meta.env.DEV) {
+    return "http://localhost:5000";
+  }
+
+  // 3. Fallback for Production if env var is missing.
+  return "https://sareeweb-ip9t.onrender.com";
 };
 
 const API_BASE_URL = resolveApiBase();
