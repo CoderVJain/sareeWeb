@@ -240,7 +240,7 @@ const ProductCatalogue = () => {
         </div>
 
         {/* Subcategory Pills */}
-        {subcategories.length > 2 && (
+        {subcategories.length > 1 && (
           <div className="flex flex-wrap justify-center gap-3">
             {subcategories.map((sub) => (
               <button

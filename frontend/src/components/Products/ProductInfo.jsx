@@ -121,15 +121,32 @@
 
 // export default ProductInfo;
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useProducts from "../../hooks/useProducts";
-import { FaWhatsapp, FaArrowLeft } from "react-icons/fa6";
+import { FaWhatsapp, FaArrowLeft, FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+
+// react-pdf imports
+import { Document, Page, pdfjs } from 'react-pdf';
+// Configure worker
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
+
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+
 
 const ProductInfo = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { products } = useProducts();
+
+  const [numPages, setNumPages] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isPdf, setIsPdf] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState(null);
 
   // 1. Loading State
   if (!products) return <div className="p-10 text-center">Loading...</div>;
@@ -151,16 +168,29 @@ const ProductInfo = () => {
     );
   }
 
-  // Helper to ensure we have a Total Price number
-  // If product.fullPrice exists, use it. Otherwise, calculate price * pieces.
-  const calculateTotal = () => {
-    // If specific fullPrice exists, use it (assumes it overrides calculation)
-    // NOTE: If you want full bundle price to always reflect (discountedPrice * pieces), remove the product.fullPrice check or update backend accordingly.
-    // For now, let's prioritize the calculated discounted total if discount exists.
+  // Detect and set PDF state
+  useEffect(() => {
+    if (product?.image && product.image.startsWith('pdf:')) {
+      setIsPdf(true);
+      const fileId = product.image.replace('pdf:', '');
+      // Use our backend proxy
+      setPdfUrl(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/proxy-pdf/${fileId}`);
+    } else {
+      setIsPdf(false);
+      setPdfUrl(null);
+    }
+    setCurrentPage(1);
+  }, [product]);
 
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+
+  // Helper to ensure we have a Total Price number
+  const calculateTotal = () => {
     const priceToUse = product.discountedPrice || product.price;
     const priceNum = parseInt(String(priceToUse).replace(/[^0-9]/g, '')) || 0;
-    const piecesNum = parseInt(product.peices) || 1; // Updated to use 'peices' to match backend
+    const piecesNum = parseInt(product.peices) || 1;
     return priceNum * piecesNum;
   };
 
@@ -186,15 +216,94 @@ const ProductInfo = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-start">
 
-          {/* --- LEFT: IMAGE SECTION --- */}
+          {/* --- LEFT: IMAGE / PDF SECTION --- */}
           <div className="w-full md:sticky md:top-24">
-            <div className="rounded-3xl overflow-hidden bg-white shadow-lg border border-[#E8DCC6] relative group">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-auto object-cover aspect-[3/4] md:aspect-[4/5] hover:scale-105 transition-transform duration-500"
-              />
+            <div className="rounded-3xl overflow-hidden bg-white shadow-lg border border-[#E8DCC6] relative group flex flex-col items-center justify-center aspect-[3/4] md:aspect-[4/5] w-full">
+
+              {!isPdf ? (
+                // STANDARD IMAGE
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover object-top"
+                />
+              ) : (
+                // PDF RENDERER
+                <div className="w-full h-full flex justify-center bg-gray-100 relative overflow-hidden">
+                  <Document
+                    file={pdfUrl}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                    loading={<div className="flex h-full items-center justify-center text-gray-500">Loading Image...</div>}
+                    error={<div className="flex h-full items-center justify-center text-red-500">Failed.</div>}
+                    className="w-full h-full flex justify-center items-center"
+                  >
+                    <Page
+                      pageNumber={currentPage}
+                      renderTextLayer={false}
+                      renderAnnotationLayer={false}
+                      className="w-full h-full flex items-center justify-center"
+                      canvasClassName="w-full h-full object-cover object-top"
+                      width={600} // Render at sufficient resolution, let CSS scale it
+                    />
+                  </Document>
+
+                  {/* PDF Navigation Overlay */}
+                  {/* {numPages && numPages > 1 && (
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white/90 px-4 py-2 rounded-full shadow-lg backdrop-blur-sm z-10 w-max">
+                      <button
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        disabled={currentPage <= 1}
+                        className="disabled:opacity-30 hover:text-[#7A2F2F]"
+                      >
+                        <FaChevronLeft />
+                      </button>
+                      <span className="text-sm font-medium whitespace-nowrap">{currentPage} / {numPages}</span>
+                      <button
+                        onClick={() => setCurrentPage(p => Math.min(numPages, p + 1))}
+                        disabled={currentPage >= numPages}
+                        className="disabled:opacity-30 hover:text-[#7A2F2F]"
+                      >
+                        <FaChevronRight />
+                      </button>
+                    </div>
+                  )} */}
+                </div>
+              )}
             </div>
+
+            {/* THUMBNAILS / VARIANTS (PDF Pages) */}
+            {isPdf && numPages && numPages > 1 && (
+              <div className="mt-6 w-full">
+                <h3 className="text-sm font-bold text-[#7A2F2F] uppercase mb-3 tracking-wide">
+                  Available Colors / Views
+                </h3>
+                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                  {Array.from(new Array(numPages), (el, index) => (
+                    <div
+                      key={`page_${index + 1}`}
+                      onClick={() => setCurrentPage(index + 1)}
+                      className={`
+                                    flex-shrink-0 w-20 h-28 rounded-lg overflow-hidden border-2 cursor-pointer transition-all bg-gray-50
+                                    ${currentPage === index + 1 ? 'border-[#7A2F2F] ring-2 ring-[#7A2F2F]/20 opacity-100' : 'border-transparent hover:border-gray-300 opacity-70 hover:opacity-100'}
+                                `}
+                    >
+                      <div className="w-full h-full flex items-center justify-center pointer-events-none">
+                        <Document file={pdfUrl} loading={null} error={null}>
+                          <Page
+                            pageNumber={index + 1}
+                            width={100}
+                            renderTextLayer={false}
+                            renderAnnotationLayer={false}
+                            className="w-full h-full"
+                            canvasClassName="w-full h-full object-cover object-top"
+                          />
+                        </Document>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* --- RIGHT: DETAILS SECTION --- */}
@@ -203,14 +312,14 @@ const ProductInfo = () => {
             {/* Header */}
             <div>
               <p className="text-sm font-bold tracking-widest text-[#7A2F2F] uppercase mb-2">
-                {product.catalog || "New Arrival"}
+                {product.subcategory || "New Arrival"}
               </p>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-[#2B0F0F] leading-tight">
                 {product.name}
               </h1>
             </div>
 
-            {/* --- UPDATED PRICE BLOCK --- */}
+            {/* Price Block */}
             <div className="bg-white p-6 rounded-2xl border border-[#E8DCC6] shadow-sm">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
 
@@ -239,7 +348,7 @@ const ProductInfo = () => {
                   </div>
                 </div>
 
-                {/* Vertical Divider (Hidden on mobile) */}
+                {/* Vertical Divider */}
                 <div className="hidden sm:block w-px h-16 bg-[#E8DCC6]"></div>
 
                 {/* Total Bundle Price */}
@@ -279,8 +388,8 @@ const ProductInfo = () => {
               </div>
 
               <div className="col-span-2 space-y-1">
-                <p className="text-[#8C7B75] font-medium">Catalog Name</p>
-                <p className="text-[#2B0F0F] font-semibold">{product.catalog}</p>
+                <p className="text-[#8C7B75] font-medium">Subcategory</p>
+                <p className="text-[#2B0F0F] font-semibold">{product.subcategory || "-"}</p>
               </div>
             </div>
 

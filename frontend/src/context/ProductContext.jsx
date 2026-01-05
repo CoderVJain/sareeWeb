@@ -16,21 +16,11 @@ const PRODUCT_CACHE_KEY = "products";
    FIXED API BASE
 ----------------------------- */
 const resolveApiBase = () => {
-  // if (import.meta.env.VITE_API_URL) {
-  //   return import.meta.env.VITE_API_URL.replace(/\/$/, "");
-  // }
+  if (import.meta.env.DEV) {
+    return "http://localhost:5000";
+  }
 
-  // if (typeof window !== "undefined") {
-  //   const { hostname } = window.location;
-  //   const isLocalhost =
-  //     hostname === "localhost" ||
-  //     hostname === "127.0.0.1" ||
-  //     hostname === "::1";
-
-  //   if (isLocalhost) return "http://localhost:5000";
-  // }
-
-  return "http://localhost:5000";
+  return import.meta.env.VITE_API_URL || "http://localhost:5000";
 };
 
 const API_BASE_URL = resolveApiBase();

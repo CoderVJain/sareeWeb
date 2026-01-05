@@ -10,7 +10,7 @@ const MainLayout = () => {
     <div className="min-h-screen bg-[#F7F5F2] flex flex-col text-base-content">
       <ScrollToTop />
       <Navbar />
-      <main className="flex-grow mt-20">
+      <main className="flex-grow mt-20 lg:mt-32">
         <Outlet />
       </main>
       <Footer />
