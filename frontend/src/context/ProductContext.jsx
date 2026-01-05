@@ -16,7 +16,7 @@ const PRODUCT_CACHE_KEY = "products";
    FIXED API BASE
 ----------------------------- */
 const resolveApiBase = () => {
-  return "https://sareeweb-ip9t.onrender.com/"
+  return "https://sareeweb-ip9t.onrender.com"
 };
 
 const API_BASE_URL = resolveApiBase();
