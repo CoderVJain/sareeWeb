@@ -174,7 +174,7 @@ const ProductInfo = () => {
       setIsPdf(true);
       const fileId = product.image.replace('pdf:', '');
       // Use our backend proxy
-      setPdfUrl(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/proxy-pdf/${fileId}`);
+      setPdfUrl(`${import.meta.env.VITE_API_URL || "https://sareeweb-ip9t.onrender.com"}/api/proxy-pdf/${fileId}`);
     } else {
       setIsPdf(false);
       setPdfUrl(null);

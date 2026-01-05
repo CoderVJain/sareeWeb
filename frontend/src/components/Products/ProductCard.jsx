@@ -14,7 +14,7 @@ const ProductCard = ({ img, name, price, pcs, discount, discountedPrice, subcate
   useEffect(() => {
     if (isPdf) {
       const fileId = img.replace('pdf:', '');
-      setPdfUrl(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/proxy-pdf/${fileId}`);
+      setPdfUrl(`${import.meta.env.VITE_API_URL || "https://sareeweb-ip9t.onrender.com"}/api/proxy-pdf/${fileId}`);
     } else {
       setPdfUrl(null);
     }
