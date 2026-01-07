@@ -15,20 +15,28 @@ const PRODUCT_CACHE_KEY = "products";
 /* -----------------------------
    FIXED API BASE
 ----------------------------- */
+/* -----------------------------
+    DYNAMIC API BASE
+----------------------------- */
 const resolveApiBase = () => {
-  // 1. If VITE_API_URL is set (e.g. in Render env), use it.
+  // 1. Manually set environment variable takes highest priority
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL.replace(/\/$/, "");
   }
 
-  // 2. If in Development mode (and no env var set), use localhost.
-  if (import.meta.env.DEV) {
+  // 2. Check if Vite is running in Development mode
+  // This is true when you run 'npm run dev'
+  if (import.meta.env.MODE === 'development') {
+    console.log("🛠️ Running in Development Mode: Using Localhost");
     return "http://localhost:5000";
   }
 
-  // 3. Fallback for Production if env var is missing.
-  return "https://sareeweb-ip9t.onrender.com";
+  // 3. Fallback for Production (Render)
+  // This is used when you run 'npm run build'
+  console.log("🚀 Running in Production Mode: Using Render API");
+  return "https://sareeweb-mjnj.onrender.com"; // Ensure this matches your live backend URL
 };
+
 
 const API_BASE_URL = resolveApiBase();
 
@@ -64,6 +72,7 @@ export const ProductProvider = ({ children }) => {
       if (!res.ok) throw new Error("Failed to load products");
 
       const data = await res.json();
+      console.log(data);
       setProducts(data);
 
       localStorage.setItem(PRODUCT_CACHE_KEY, JSON.stringify(data));
