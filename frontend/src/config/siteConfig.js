@@ -1,22 +1,21 @@
 const siteConfig = {
   company: {
-    name: "Cindral Labs",
-    shortName: "Cindral Labs",
-    initials: "CL",
-    tagline: "Specialty chemistry for modern industries",
+    name: "Saree Canvas",
+    shortName: "Saree Canvas",
+    initials: "SC",
+    tagline: "Delivering sarees",
   },
   contact: {
-    phone: "+91 75065 77362",
-    phoneHref: "+91 75065 77362",
-    email: "hello@cindrallabs.com",
-    salesEmail: "sales@cindrallabs.com",
-    whatsapp: "+91 75065 77362",
+    phone: "+91 9106181135",
+    phoneHref: "+91 9106181135",
+    email: "meenakshi07raj@gmail.com",
+    salesEmail: "meenakshi07raj@gmail.com",
+    whatsapp: "+91 9106181135",
   },
   socialLinks: [
     { label: "Website", href: "#", icon: "public" },
-  { label: "LinkedIn", href: "#", icon: "business_center" }, // alternative to LinkedIn
-  { label: "Facebook", href: "#", icon: "thumb_up" },         // alternative to Facebook
-  { label: "Instagram", href: "#", icon: "photo_camera" },
+    { label: "Facebook", href: "#", icon: "thumb_up" },         // alternative to Facebook
+    { label: "Instagram", href: "#", icon: "photo_camera" },
   ],
 };
 

@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // React Icons
-import { 
-  FaInstagram, 
-  FaFacebookF, 
-  FaXTwitter, 
-  FaPhone, 
-  FaEnvelope, 
+import {
+  FaInstagram,
+  FaFacebookF,
+  FaXTwitter,
+  FaPhone,
+  FaEnvelope,
 } from "react-icons/fa6";
 
 const Footer = () => {
@@ -16,29 +16,28 @@ const Footer = () => {
   const socialIcons = [
     { icon: <FaInstagram className="text-lg" />, url: "#" },
     { icon: <FaFacebookF className="text-lg" />, url: "#" },
-    { icon: <FaXTwitter className="text-lg" />, url: "#" },
   ];
 
   const contactInfo = [
-    { 
-      icon: <FaPhone />, 
-      text: "+91 98765 43210", 
-      href: "tel:+919876543210" 
+    {
+      icon: <FaPhone />,
+      text: "+91 98765 43210",
+      href: "tel:+919876543210"
     },
-    { 
-      icon: <FaEnvelope />, 
-      text: "hello@sareecanvas.com", 
-      href: "mailto:hello@sareecanvas.com" 
+    {
+      icon: <FaEnvelope />,
+      text: "meenakshi07raj@gmail.com",
+      href: "mailto:meenakshi07raj@gmail.com"
     }
   ];
 
   return (
     <footer className="bg-[#F2E8DA] border-t border-[#E8DCC6] pt-16 pb-10 font-inter text-[#3B2E2A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-24">
-        
+
         {/* TOP SECTION */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-16">
-          
+
           {/* 1. BRAND */}
           <div className="lg:col-span-5 space-y-6">
             <Link to="/" className="flex items-center gap-2 group w-fit">
@@ -73,8 +72,8 @@ const Footer = () => {
             <ul className="space-y-4">
               {[
                 { name: "Home", path: "/" },
-                { name: "Saree Collection", path: "/products" },
-                { name: "About Us", path: "/about" }, 
+                { name: "Products", path: "/products" },
+                { name: "About Us", path: "/about" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
@@ -100,8 +99,8 @@ const Footer = () => {
             <ul className="space-y-4">
               {contactInfo.map((info, index) => (
                 <li key={index}>
-                  <a 
-                    href={info.href} 
+                  <a
+                    href={info.href}
                     className="flex items-center gap-3 text-[#6F6F6F] hover:text-[#7A2F2F] transition-colors duration-300 group"
                   >
                     <span className="h-8 w-8 flex items-center justify-center rounded-full bg-white border border-[#E8DCC6] text-[#3B2E2A] group-hover:bg-[#7A2F2F] group-hover:text-white group-hover:border-[#7A2F2F] transition-all text-sm">

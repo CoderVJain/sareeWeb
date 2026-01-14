@@ -253,7 +253,7 @@ const ProductInfo = () => {
 
                 {/* Per Piece Price */}
                 <div>
-                  <div className="flex items-baseline gap-3">
+                  <div className="flex items-center gap-3">
                     {product.discountedPrice ? (
                       <>
                         <span className="text-4xl font-serif font-bold text-[#2B0F0F]">

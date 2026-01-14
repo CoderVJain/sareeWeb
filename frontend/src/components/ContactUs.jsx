@@ -20,6 +20,34 @@ const contactDetails = [
 ];
 
 const ContactUs = () => {
+
+  const [result, setResult] = React.useState("");
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setResult("Sending....");
+    const formData = new FormData(event.target);
+
+    formData.append("access_key", "57fd7d06-9cb2-43be-97fc-82215a5b9e4e");
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setResult("Form Submitted Successfully");
+      event.target.reset();
+    } else {
+      console.log("Error", data);
+      setResult(data.message);
+    }
+  };
+
+  console.log(result);
+
   return (
     <section className="bg-[#F9F5F0] py-12 md:py-20 font-inter">
       {/* Responsive Container:
@@ -29,7 +57,7 @@ const ContactUs = () => {
         - lg:grid-cols-2: Stacks on mobile/tablet, side-by-side on desktop
       */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 px-4 sm:px-8 lg:px-24">
-        
+
         {/* LEFT CARD */}
         <div className="rounded-3xl bg-white border border-[#E8DCC6] p-6 md:p-10 shadow-[0px_4px_20px_rgba(0,0,0,0.08)]">
           <h3 className="text-xl md:text-2xl !font-bold !text-black">
@@ -111,7 +139,7 @@ const ContactUs = () => {
             product details.
           </p>
 
-          <form className="mt-8 md:mt-10 space-y-4 md:space-y-5">
+          <form className="mt-8 md:mt-10 space-y-4 md:space-y-5" onSubmit={onSubmit}>
             {/* FIRST ROW: Stacks on mobile, 2 columns on medium screens */}
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
               <input
@@ -139,6 +167,8 @@ const ContactUs = () => {
             >
               Send Message
             </button>
+
+            <span className="text-[#000000] text-sm mt-2 block">{result}</span>
           </form>
         </div>
       </div>
