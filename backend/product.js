@@ -190,11 +190,11 @@ const productsHandler = async (req, res) => {
   try {
     // Return cached data if it's still fresh
     if (global.productCache.data && (now - global.productCache.lastFetch < CACHE_DURATION)) {
-      console.log("Serving products from cache");
+      
       return res.status(200).json(global.productCache.data);
     }
 
-    console.log("Fetching products from Google Sheets");
+    
     const rows = await getSheet(process.env.SHEET_ID);
 
     if (!rows || rows.length <= 1) {

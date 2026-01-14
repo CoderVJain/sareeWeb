@@ -46,7 +46,7 @@ const ContactUs = () => {
     }
   };
 
-  console.log(result);
+  
 
   return (
     <section className="bg-[#F9F5F0] py-12 md:py-20 font-inter">

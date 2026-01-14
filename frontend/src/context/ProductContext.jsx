@@ -72,7 +72,7 @@ export const ProductProvider = ({ children }) => {
       if (!res.ok) throw new Error("Failed to load products");
 
       const data = await res.json();
-      console.log(data);
+      
       setProducts(data);
 
       localStorage.setItem(PRODUCT_CACHE_KEY, JSON.stringify(data));

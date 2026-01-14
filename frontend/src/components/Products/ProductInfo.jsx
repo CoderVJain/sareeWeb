@@ -179,7 +179,7 @@ const ProductInfo = () => {
   };
 
   const imageList = product.images && product.images.length > 0 ? product.images : [product.image].filter(Boolean);
-  console.log(imageList);
+  
   return (
     <div className="bg-[#F9F5F0] min-h-screen py-8 md:py-16 font-sans">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
