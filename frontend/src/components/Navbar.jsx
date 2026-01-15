@@ -46,13 +46,14 @@ const Navbar = () => {
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center group cursor-pointer" onClick={() => window.scrollTo(0, 0)}>
           <Link to="/" className="flex items-center gap-3">
             {/* Logo Image with Hover Expansion */}
+            {/* Logo Image with Hover Expansion */}
             <img
               src="/logo.webp"
               alt="Saree Canvas Logo"
-              className="h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-sm"
+              className="h-10 sm:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-sm"
             />
             {/* Brand Name */}
-            <h1 className="text-3xl lg:text-4xl font-serif font-bold text-[#2B0F0F] tracking-wide uppercase transition-colors duration-300 group-hover:text-[#7A2F2F]">
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#2B0F0F] tracking-wide uppercase transition-colors duration-300 group-hover:text-[#7A2F2F]">
               Saree Canvas
             </h1>
           </Link>
@@ -62,7 +63,7 @@ const Navbar = () => {
         <div className="ml-auto lg:ml-0">
           <button
             onClick={handleShopNow}
-            className="flex items-center gap-2 bg-gradient-to-r from-[#7A2F2F] to-[#5E2222] text-white px-6 py-3 rounded-full text-sm font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 active:scale-95 border border-[#7A2F2F]/20"
+            className="flex items-center gap-2 bg-gradient-to-r from-[#7A2F2F] to-[#5E2222] text-white px-3 py-2 sm:px-6 sm:py-3 rounded-full text-sm font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 active:scale-95 border border-[#7A2F2F]/20"
           >
             <span className="hidden sm:inline tracking-wide">Shop Now</span>
             <span className="sm:hidden">Shop</span>
