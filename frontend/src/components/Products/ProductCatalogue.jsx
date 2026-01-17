@@ -24,6 +24,11 @@ const ProductCatalogue = () => {
     setQuery("");
   }, [categoryParam]);
 
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+
   // 1. Filter by Category (from URL)
   const categoryFilteredProducts = useMemo(() => {
     if (!categoryParam) return products;
