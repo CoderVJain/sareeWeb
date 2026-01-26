@@ -21,8 +21,8 @@ const Footer = () => {
   const contactInfo = [
     {
       icon: <FaPhone />,
-      text: "+91 98765 43210",
-      href: "tel:+919876543210"
+      text: "+91 9106181135",
+      href: "tel:+919106181135"
     },
     {
       icon: <FaEnvelope />,
