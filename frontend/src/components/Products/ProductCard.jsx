@@ -90,6 +90,12 @@ const ProductCard = ({ img, name, price, pcs, discount, discountedPrice, subcate
 
                 </span>
 
+                {discount && (
+                  <span className="text-[#7A2F2F] text-xs font-bold ml-2 border border-[#E8DCC6] px-1.5 py-0.5 rounded bg-[#F9F5F0]">
+                    {discount}% OFF
+                  </span>
+                )}
+
               </>
 
             ) : (
