@@ -7,18 +7,25 @@ import useProducts from "../../hooks/useProducts.js";
 const ITEMS_PER_PAGE = 8;
 
 const ProductCatalogue = () => {
-  const [query, setQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedSubcategory, setSelectedSubcategory] = useState("All");
 
   const { products } = useProducts();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const categoryParam = searchParams.get("category"); // e.g., "Saree", "Suit"
 
+  // Initialize state from URL params
+  const [query, setQuery] = useState(searchParams.get("q") || "");
+  const [currentPage, setCurrentPage] = useState(() => {
+    const page = searchParams.get("page");
+    return page ? parseInt(page) : 1;
+  });
+  const [selectedSubcategory, setSelectedSubcategory] = useState(searchParams.get("subcategory") || "All");
+
   // Reset page and subcategory when category changes
   useEffect(() => {
+    // If the category changes via navigation (e.g. Navbar), the URL already changed.
+    // We just need to sync the local state to match the "fresh" category view.
     setCurrentPage(1);
     setSelectedSubcategory("All");
     setQuery("");
@@ -28,6 +35,21 @@ const ProductCatalogue = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
+
+  // Helper to update URL params
+  const updateUrlParams = (updates, replace = false) => {
+    setSearchParams(prev => {
+      const newParams = new URLSearchParams(prev);
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === null || value === undefined || value === "") {
+          newParams.delete(key);
+        } else {
+          newParams.set(key, value);
+        }
+      });
+      return newParams;
+    }, { replace });
+  };
 
   // 1. Filter by Category (from URL)
   const categoryFilteredProducts = useMemo(() => {
@@ -68,21 +90,37 @@ const ProductCatalogue = () => {
   );
 
   const handleSearchChange = (e) => {
-    setQuery(e.target.value);
+    const val = e.target.value;
+    setQuery(val);
     setCurrentPage(1);
+    updateUrlParams({ q: val, page: 1 }, true); // Replace history for typing
   };
 
   const handleSubcategoryChange = (sub) => {
     setSelectedSubcategory(sub);
     setCurrentPage(1);
+    updateUrlParams({ subcategory: sub === "All" ? null : sub, page: 1 });
   }
 
   const handleClick = (id) => {
     navigate(`/product/${id}`);
   };
 
-  const goPrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const goNext = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const goPrev = () => {
+    setCurrentPage((prev) => {
+      const newPage = Math.max(prev - 1, 1);
+      updateUrlParams({ page: newPage });
+      return newPage;
+    });
+  };
+
+  const goNext = () => {
+    setCurrentPage((prev) => {
+      const newPage = Math.min(prev + 1, totalPages);
+      updateUrlParams({ page: newPage });
+      return newPage;
+    });
+  };
 
   return (
     <section className="bg-[#F9F5F0] min-h-screen font-sans">
