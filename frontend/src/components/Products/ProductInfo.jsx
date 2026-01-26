@@ -173,7 +173,7 @@ const ProductInfo = () => {
   const totalPrice = calculateTotal();
 
   const openWhatsApp = (message) => {
-    const phoneNumber = "917506577362";
+    const phoneNumber = "919106181135";
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
   };
